@@ -1,13 +1,19 @@
+// importing modules
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { connectDB } from './config/db.conn.js';
 import path from 'path';
 import fs from 'fs';
 import cron from 'node-cron'
 import fileUpload from 'express-fileupload';
 import cookieParser from 'cookie-parser';
+
+// importing Database connection
+import { connectDB } from './config/db.conn.js';
+
+// importing routes
 import newsRoutes from './routes/news.route.js';
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 dotenv.config();
@@ -49,7 +55,7 @@ cron.schedule("0 * * * *", () => {
 
 // api used
 app.use('/api/news', newsRoutes);
-
+app.use('/api/users', authRoutes);
 app.use((err, req, res, next) => {
     res.status(500).json({ message: process.env.NODE_ENV === 'production' ? "Internal Server Error" : "Internal Server Error : " + err.message })
 })

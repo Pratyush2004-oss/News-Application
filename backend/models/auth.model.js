@@ -13,6 +13,6 @@ const authSchema = new Mongoose.Schema({
         required: true,
         unique: true
     },
-});
+}, { timestamps: true });
 
 export const authModel = Mongoose.model("auth", authSchema);

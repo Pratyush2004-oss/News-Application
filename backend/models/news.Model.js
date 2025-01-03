@@ -28,7 +28,20 @@ const newsSchema = new mongoose.Schema({
     language: [{
         type: String,
         required: true
-    }]
+    }],
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "auth"
+    }],
+    comments: [{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "auth"
+        },
+        comment: {
+            type: String
+        }
+    }],
 }, { timestamps: true });
 
 export const newsModel = mongoose.model("news", newsSchema);

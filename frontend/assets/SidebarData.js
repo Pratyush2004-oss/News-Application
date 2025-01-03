@@ -7,9 +7,9 @@ export const Data = [
         link: '/'
     },
     {
-        title: 'My Blogs',
+        title: 'Featured News',
         icon: UserPenIcon,
-        link: '/myblogs'
+        link: '/featured'
     },
     {
         title: 'Favourites',
