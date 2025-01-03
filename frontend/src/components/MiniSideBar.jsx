@@ -13,8 +13,8 @@ const MiniSideBar = () => {
                     <Menu />
                 </label>
                 <div className='flex flex-col my-2 lg:hidden h-[40vh] justify-evenly'>
-                    {Data.map((item) => (
-                        <Link to={item.link} className='btn btn-outline'><item.icon /></Link>
+                    {Data.map((item, idx) => (
+                        <Link key={idx} to={item.link} className='btn btn-outline'><item.icon /></Link>
                     ))}
                 </div>
             </div>
@@ -34,9 +34,9 @@ const MiniSideBar = () => {
                                 <Link to={item.link} className='flex items-center gap-4 p-2 m-2 transition-all duration-300 rounded-md hover:bg-gray-200' key={idx}> <item.icon /> {item.title}</Link>
                             ))}
                         </div>
+                        <div></div>
                     </div>
                 </div>
-                <div></div>
             </div>
         </div>
     )
