@@ -4,10 +4,12 @@ import Home from './pages/Home'
 
 const App = () => {
   return (
-    <Routes>
-      <Route path='/' element={<Home />} />
-      <route path='*' element={<Home />} />
-    </Routes>
+    <div className='h-screen p-4'>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='*' element={<Home />} />
+      </Routes>
+    </div>
   )
 }
 

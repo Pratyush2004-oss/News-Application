@@ -21,14 +21,14 @@ const newsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    date: {
-        type: String,
-        required: true,
-    },
     category: {
         type: String,
         required: true,
     },
-});
+    language: [{
+        type: String,
+        required: true
+    }]
+}, { timestamps: true });
 
 export const newsModel = mongoose.model("news", newsSchema);
