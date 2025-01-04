@@ -1,6 +1,5 @@
-import { create } from "zustand";
-import { axiosInstance } from "../lib/axiosInstance";
-
+import { create } from 'zustand'
+import axiosInstance from '../lib/axios';
 export const useNewsStore = create((set, get) => ({
     news: [],
     currentNews: null,
@@ -9,8 +8,8 @@ export const useNewsStore = create((set, get) => ({
     fetchNews: async () => {
         try {
             set({ error: null })
-            const response = await axiosInstance.get('/news');
-            console.log(response)
+            const response = await axiosInstance.get("/news");
+            console.log(response.data)
             if (response.data.success) {
                 set({ news: response.data.news })
             }
@@ -35,7 +34,7 @@ export const useNewsStore = create((set, get) => ({
             set({ error: null })
             const response = await axiosInstance.get(`/news/${id}`);
         } catch (error) {
-            
+
         }
     }
 

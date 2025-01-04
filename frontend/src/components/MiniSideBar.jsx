@@ -1,5 +1,5 @@
 import React from 'react'
-import { Data } from '../../Assets/SidebarData'
+import { Data } from "../assets/SidebarData"
 import { Link } from 'react-router-dom'
 import { Menu } from 'lucide-react'
 

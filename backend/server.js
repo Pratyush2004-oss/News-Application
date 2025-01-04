@@ -19,14 +19,10 @@ const app = express();
 dotenv.config();
 const __dirname = path.resolve();
 
-// cors
-app.use(cors({
-    origin: "http://localhost:4000",
-    credentials: true,
-}));
 
 app.use(express.json()); // from req.body parse the data to the json format
 app.use(cookieParser()); // for handling cookies in middlewares
+app.use(express.urlencoded({ extended: true }))
 
 app.use(
     fileUpload({
@@ -53,15 +49,27 @@ cron.schedule("0 * * * *", () => {
     }
 });
 
+// cors
+app.use(cors({
+    origin: 'http://localhost:5001',
+    credentials: true,
+}));
+
 // api used
 app.use('/api/users', authRoutes);
 app.use('/api/news', newsRoutes);
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "../frontend/dist")));
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
+    });
+}
 app.use((err, req, res, next) => {
     res.status(500).json({ message: process.env.NODE_ENV === 'production' ? "Internal Server Error" : "Internal Server Error : " + err.message })
 })
 
-
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     connectDB();
     console.log(`server is running on port ${process.env.PORT}`)

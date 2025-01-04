@@ -5,19 +5,15 @@ const AllNews = () => {
   const { news, error, fetchNews } = useNewsStore();
   useEffect(() => {
     fetchNews();
-    console.log(news)
   }, [fetchNews]);
   return (
     <div>
       {
-        news.length > 0 && news.map((item, idx) => {
-
-          return (
-            <div>
-              {item.title}
-            </div>
-          )
-        })
+        news.length > 0 && news.map((item, idx) => (
+          <div key={idx}>
+            {item.title}
+          </div>
+        ))
       }
 
     </div>

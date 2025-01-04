@@ -14,6 +14,7 @@ const newsSchema = new mongoose.Schema({
     link: {
         type: String,
         required: true,
+        unique: true
     },
     source: {
         type: String,

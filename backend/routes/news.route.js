@@ -5,7 +5,7 @@ import { protectRoute, requireAdmin } from "../middleware/auth.middleware.js";
 const router = Router();
 
 router.get('/', getNews);
-router.get('/api', getNewsFromAPI);
+router.get('/from-api', getNewsFromAPI);
 router.get('/post', protectRoute, requireAdmin, postNews);
 router.get('/:id/like', protectRoute, likeNews);
 router.get('/:id', getSingleNews);

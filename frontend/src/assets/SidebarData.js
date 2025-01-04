@@ -2,7 +2,7 @@ import { Briefcase, Star, UserPenIcon } from "lucide-react";
 
 export const Data = [
     {
-        title: 'All Blogs',
+        title: 'All',
         icon: Briefcase,
         link: '/'
     },
