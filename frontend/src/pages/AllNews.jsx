@@ -4,6 +4,7 @@ import { useNewsStore } from '../store/newsStore'
 const AllNews = () => {
   const { news, error, fetchNews } = useNewsStore();
   useEffect(() => {
+    
     fetchNews();
   }, [fetchNews]);
   return (

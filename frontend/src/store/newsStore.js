@@ -8,8 +8,7 @@ export const useNewsStore = create((set, get) => ({
     fetchNews: async () => {
         try {
             set({ error: null })
-            const response = await axiosInstance.get("/news");
-            console.log(response.data)
+            const response = await axiosInstance.get("/news", { withCredentials: true });
             if (response.data.success) {
                 set({ news: response.data.news })
             }
@@ -23,7 +22,8 @@ export const useNewsStore = create((set, get) => ({
 
     fetchNewsFromAPI: async () => {
         try {
-            await axiosInstance.get('/news/from-api');
+            const response = await axiosInstance.get('/news/from-api', {withCredentials: true});
+            console.log(response)
         } catch (error) {
             set({ error: error.message })
         }
