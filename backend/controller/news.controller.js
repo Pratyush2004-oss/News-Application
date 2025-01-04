@@ -1,5 +1,6 @@
 import cloudinary from "../config/clodinary.js";
 import { newsModel } from "../models/news.Model.js"
+import { fetchFromAPI } from "../services/Api.services.js";
 
 const uploadToCloudinary = async (file) => {
     try {
@@ -17,7 +18,6 @@ const uploadToCloudinary = async (file) => {
 // get news from database
 export const getNews = async (req, res, next) => {
     try {
-
         const news = await newsModel.find().sort({ createdAt: -1 });
 
         if (!news) {
@@ -28,6 +28,45 @@ export const getNews = async (req, res, next) => {
     } catch (error) {
         console.log("Error in getting News : ", error.message)
         next(error)
+    }
+}
+
+// getNews from API
+export const getNewsFromAPI = async (req, res, next) => {
+    try {
+        const News_Key = process.env.NEWS_API;
+        const data = await fetchFromAPI(`https://newsdata.io/api/1/latest?apikey=${News_Key}&country=in&language=en`);
+        if (!data) {
+            return res.status(404).json({ message: "No news found", success: false })
+        }
+        const news = data.results;
+
+        // save news in database
+        for (let i = 0; i < news.length; i++) {
+            const newsExists = await newsModel.findOne({ link: news[i].link });
+            if (newsExists) {
+                continue;
+            }
+            const category = JSON.stringify(news[i].category);
+            const saveNews = await newsModel.create({
+                title: news[i].title,
+                description: news[i].description,
+                image: news[i].image_url,
+                link: news[i].link,
+                source: news[i].source_name,
+                category: category,
+                language: news[i].language,
+                publishedAt: news[i].pubDate
+            })
+            saveNews.save();
+
+        }
+
+        res.status(200).json({ message: "News fetched from API" , success: true })
+
+    } catch (error) {
+        console.log("Error in getting news from API" + error.message);
+        next(error);
     }
 }
 

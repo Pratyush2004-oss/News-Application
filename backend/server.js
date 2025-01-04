@@ -21,7 +21,7 @@ const __dirname = path.resolve();
 
 // cors
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:4000",
     credentials: true,
 }));
 
@@ -54,8 +54,8 @@ cron.schedule("0 * * * *", () => {
 });
 
 // api used
-app.use('/api/news', newsRoutes);
 app.use('/api/users', authRoutes);
+app.use('/api/news', newsRoutes);
 app.use((err, req, res, next) => {
     res.status(500).json({ message: process.env.NODE_ENV === 'production' ? "Internal Server Error" : "Internal Server Error : " + err.message })
 })

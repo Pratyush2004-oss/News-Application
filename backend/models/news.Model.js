@@ -7,11 +7,9 @@ const newsSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true,
     },
     image: {
         type: String,
-        required: true,
     },
     link: {
         type: String,
@@ -24,6 +22,9 @@ const newsSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
+    },
+    publishedAt: {
+        type: Date,
     },
     language: [{
         type: String,
