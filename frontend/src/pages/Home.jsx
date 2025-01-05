@@ -4,9 +4,11 @@ import MiniSideBar from '../components/MiniSideBar'
 import Sidebar from '../components/Sidebar'
 import NewsDialog from '../components/NewsDialog'
 import { useNewsStore } from '../store/newsStore'
+import { useAuthStore } from '../store/authStore'
 
 const Home = () => {
   const { fetchNewsFromAPI } = useNewsStore();
+  const {isAdmin} = useAuthStore();
   useEffect(() => {
     fetchNewsFromAPI();
   }, [fetchNewsFromAPI]);
@@ -15,7 +17,10 @@ const Home = () => {
       <div className='flex-col justify-between hidden w-1/6 p-4 border border-gray-500 rounded-xl lg:flex'><Sidebar /></div>
       <div className='lg:hidden'><MiniSideBar /></div>
       <div className='z-10 w-full p-4 border border-gray-500 lg:w-5/6 rounded-xl'>
+      {
+        isAdmin &&
         <NewsDialog />
+      }
         <Outlet />
       </div>
     </div>

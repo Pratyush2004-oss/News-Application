@@ -1,6 +1,7 @@
 import { KeyRound, Mail, User } from 'lucide-react'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -9,7 +10,17 @@ const Signup = () => {
     firstName: '',
     lastName: ''
   })
-  const handleSubmit = () => { };
+  const { register } = useAuthStore();
+  const Navigate = useNavigate();
+  const handleSubmit = () => {
+    if (!input.email || !input.password || !input.firstName || !input.lastName) {
+      toast.error('Please fill all the fields')
+      return
+    }
+    register(input);
+    setInput({ email: '', password: '', firstName: '', lastName: '' });
+    Navigate('/login');
+  };
   return (
     <div className='flex items-center justify-center h-[90vh] mx-auto'>
       <div className='flex flex-col items-center p-5 rounded-lg shadow-lg sm:w-2/3 md:w-1/2'>

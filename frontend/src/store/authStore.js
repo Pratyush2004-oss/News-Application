@@ -1,40 +1,95 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 axios.defaults.withCredentials = true
 
 export const useAuthStore = create((set) => ({
     user: null,
     error: null,
+    isAdmin: false,
+    isAuthenticated: false,
+    isCheckingAuth: true,
 
     register: async (input) => {
-        const response = await axios.post('/api/auth/register', input);
-        console.log(response.data)
-        if (response.data.success) {
-            set({ user: response.data.user });
-        }
-        else {
-            set({ error: response.data.message });
+        try {
+            set({ error: null })
+            const response = await axios.post('/api/auth/register', input, { headers: { 'Content-Type': 'application/json' } });
+            console.log(response.data)
+            if (response.data.success) {
+                toast.success(response.data.message);
+            }
+            else {
+                set({ error: response.data.message });
+                toast.error(response.data.message || 'Something went wrong');
+            }
+        } catch (error) {
+            set({ error: error.message })
+            toast.error(error.message || 'Something went wrong');
         }
     },
 
     login: async (input) => {
-        const response = await axios.post('/api/auth/login', input);
-        console.log(response.data)
-        if (response.data.success) {
-            set({ user: response.data.user });
-        }
-        else {
-            set({ error: response.data.message });
-            alert(response.data.message || 'Something went wrong');
+        try {
+            if (!input.email || !input.password) {
+                toast.error('Please fill all the fields')
+            }
+            const response = await axios.post('/api/auth/login', input);
+            console.log(response.data)
+            if (response.data.success) {
+                set({ user: response.data.user });
+                toast.success(response.data.message);
+            }
+            else {
+                set({ error: response.data.message });
+                toast.error(response.data.message || 'Something went wrong');
+            }
+        } catch (error) {
+            set({ error: error.message })
+            toast.error(error.message || 'Something went wrong');
+
         }
 
     },
 
     check_user: async () => {
-
+        try {
+            set({ error: null, isAuthenticated: false, isCheckingAuth: true })
+            const response = await axios.get('/api/auth/check-auth');
+            console.log(response)
+            if (response.data.success) {
+                set({ user: response.data.user, isAuthenticated: true, isCheckingAuth: false });
+            }
+        } catch (error) {
+            set({ error: error.message, isCheckingAuth: false })
+        }
     },
 
-    check_admin: async () => { },
+    check_admin: async () => {
+        try {
+            set({ error: null, isAdmin: false })
+            const response = await axios.get('/api/auth/check-admin');
+            if (response.data.success) {
+                set({ user: response.data.user, isAdmin: true });
+            }
+        }
+        catch (error) {
+            set({ error: error.message })
+        }
+    },
 
-    logout: async () => { }
+    logout: async () => {
+        try {
+            set({ error: null })
+            const response = await axios.get('/api/auth/logout');
+            if (response.data.success) {
+                set({ user: null });
+                toast.success(response.data.message);
+            }
+            else {
+                set({ error: response.data.message });
+            }
+        } catch (error) {
+            set({ error: error.message })
+        }
+    }
 }))
