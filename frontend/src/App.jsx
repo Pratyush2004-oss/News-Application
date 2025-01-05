@@ -7,6 +7,7 @@ import Favourites from './pages/Favourites'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import Featured from './pages/Featured'
+import NewsPage from './pages/News/[NewsId]/page'
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route index element={<AllNews />} />
           <Route path='/favourite' element={<Favourites />} />
           <Route path='/featured' element={<Featured />} />
+          <Route path='/news/:id' element={<NewsPage />} />
           {/*
             <Route path='*' element={<Error404 />} />
             */}

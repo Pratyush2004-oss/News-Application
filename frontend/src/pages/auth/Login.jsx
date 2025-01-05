@@ -18,7 +18,7 @@ const Login = () => {
   };
   return (
     <div className='flex items-center justify-center h-[90vh] mx-auto'>
-      <div className='flex flex-col items-center p-5 rounded-lg shadow-lg sm:w-2/3'>
+      <div className='flex flex-col items-center p-5 rounded-lg shadow-lg sm:w-2/3 md:w-1/2'>
         <h1 className='w-full text-2xl font-bold text-center border-b-4 border-black'>Login</h1>
         <div className='w-full my-2'>
           <label className="flex items-center gap-5 input validator">

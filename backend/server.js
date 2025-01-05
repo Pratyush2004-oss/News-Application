@@ -54,7 +54,7 @@ cron.schedule("0 * * * *", () => {
 
 // cors
 app.use(cors({
-    origin: "http://localhost:5173", credentials: true
+    origin: "http://localhost:8000", credentials: true
 }));
 
 // api used

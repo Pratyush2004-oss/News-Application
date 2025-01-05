@@ -18,12 +18,13 @@ const uploadToCloudinary = async (file) => {
 // get news from database
 export const getNews = async (req, res, next) => {
     try {
+        const count = await newsModel.countDocuments();
         const news = await newsModel.find().sort({ createdAt: -1 });
 
         if (!news) {
             return res.status(404).json({ message: "No news found", success: false })
         }
-        return res.status(200).json({ news, success: true })
+        return res.status(200).json({ news, count, success: true })
 
     } catch (error) {
         console.log("Error in getting News : ", error.message)
@@ -187,25 +188,13 @@ export const getLikedNews = async (req, res, next) => {
 export const getFeaturedNews = async (req, res, next) => {
     try {
         const news = await newsModel.aggregate([
-            {
-                $sample: { size: 10 }
-            },
-            {
-                $sort: { createdAt: -1 }
-            },
-            {
-                $project: {
-                    _id: 1,
-                    title: 1,
-                    description: 1,
-                    image: 1,
-                    link: 1,
-                    source: 1,
-                    category: 1,
-                    language: 1
-                }
-            },
+            { $sample: { size: 10 } },
+            { $sort: { createdAt: -1 } },
+            { $limit: 10 },
+            { $project: { image: 1, title: 1, description: 1, comments: 1, likes: 1, createdAt: 1, link: 1, source: 1, category: 1, } }
         ])
+
+        res.status(200).json({ news, success: true });
     } catch (error) {
         next(error);
     }
