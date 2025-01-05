@@ -1,5 +1,7 @@
+import axios from 'axios';
 import { create } from 'zustand'
-import axiosInstance from '../lib/axios';
+axios.defaults.withCredentials = true
+
 export const useNewsStore = create((set, get) => ({
     news: [],
     currentNews: null,
@@ -8,12 +10,9 @@ export const useNewsStore = create((set, get) => ({
     fetchNews: async () => {
         try {
             set({ error: null })
-            const response = await axiosInstance.get("/news", { withCredentials: true });
+            const response = await axios.get(`/api/news`);
             if (response.data.success) {
                 set({ news: response.data.news })
-            }
-            else {
-                set({ error: response.data.message })
             }
         } catch (error) {
             set({ error: error.message })
@@ -22,8 +21,7 @@ export const useNewsStore = create((set, get) => ({
 
     fetchNewsFromAPI: async () => {
         try {
-            const response = await axiosInstance.get('/news/from-api', {withCredentials: true});
-            console.log(response)
+            await axios.get(`${API_URL}/from-api`);
         } catch (error) {
             set({ error: error.message })
         }
@@ -32,7 +30,7 @@ export const useNewsStore = create((set, get) => ({
     fetchSingleNews: async (id) => {
         try {
             set({ error: null })
-            const response = await axiosInstance.get(`/news/${id}`);
+            const response = await axios.get(`${API_URL}/${id}`);
         } catch (error) {
 
         }

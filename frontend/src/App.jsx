@@ -19,7 +19,9 @@ const App = () => {
           <Route index element={<AllNews />} />
           <Route path='/favourite' element={<Favourites />} />
           <Route path='/featured' element={<Featured />} />
-          <Route path='*' element={<Error404 />} />
+          {/*
+            <Route path='*' element={<Error404 />} />
+            */}
         </Route>
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />

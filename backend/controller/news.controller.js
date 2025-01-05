@@ -62,7 +62,7 @@ export const getNewsFromAPI = async (req, res, next) => {
 
         }
 
-        res.status(200).json({ message: "News fetched from API" , success: true })
+        res.status(200).json({ message: "News fetched from API" , success: true, news })
 
     } catch (error) {
         console.log("Error in getting news from API" + error.message);

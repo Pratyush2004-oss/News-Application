@@ -2,11 +2,12 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
 import path from 'path';
 import fs from 'fs';
 import cron from 'node-cron'
 import fileUpload from 'express-fileupload';
-import cookieParser from 'cookie-parser';
 
 // importing Database connection
 import { connectDB } from './config/db.conn.js';
@@ -17,7 +18,9 @@ import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 dotenv.config();
+
 const __dirname = path.resolve();
+const PORT = process.env.PORT;
 
 
 app.use(express.json()); // from req.body parse the data to the json format
@@ -51,26 +54,24 @@ cron.schedule("0 * * * *", () => {
 
 // cors
 app.use(cors({
-    origin: 'http://localhost:5001',
-    credentials: true,
+    origin: "http://localhost:5173", credentials: true
 }));
 
 // api used
 app.use('/api/users', authRoutes);
 app.use('/api/news', newsRoutes);
 
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../frontend/dist")));
-    app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
-    });
-}
+// if (process.env.NODE_ENV === "production") {
+//     app.use(express.static(path.join(__dirname, "../frontend/dist")));
+//     app.get("*", (req, res) => {
+//         res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
+//     });
+// }
 app.use((err, req, res, next) => {
     res.status(500).json({ message: process.env.NODE_ENV === 'production' ? "Internal Server Error" : "Internal Server Error : " + err.message })
 })
 
-const PORT = process.env.PORT;
 app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
     connectDB();
-    console.log(`server is running on port ${process.env.PORT}`)
 })

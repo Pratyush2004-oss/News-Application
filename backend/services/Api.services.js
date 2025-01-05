@@ -1,14 +1,6 @@
-import axios from "axios";
-
 export const fetchFromAPI = async (url) => {
-    const response = await axios.get(url, {
-        headers: {
-            Accept: "application/json",
-        }
-    });
+    const response = await fetch(url);
+    const data = response.json();
 
-    if (response.status !== 200) {
-        throw new Error("Failed to fetech data from the API" + response.statusText);
-    }
-    return response.data;
+    return data;
 };

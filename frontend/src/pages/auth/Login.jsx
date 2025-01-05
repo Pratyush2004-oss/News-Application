@@ -1,13 +1,21 @@
 import { KeyRound, Mail } from 'lucide-react'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
 
 const Login = () => {
+  const { login } = useAuthStore();
   const [input, setInput] = useState({
     email: '',
     password: ''
   })
-  const handleSubmit = () => { };
+  const handleSubmit = () => { 
+    if(!input.email || !input.password){
+      alert('Please fill all the fields')
+      return
+    }
+    login(input);
+  };
   return (
     <div className='flex items-center justify-center h-[90vh] mx-auto'>
       <div className='flex flex-col items-center p-5 rounded-lg shadow-lg sm:w-2/3'>
