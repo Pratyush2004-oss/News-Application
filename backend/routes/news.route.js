@@ -7,7 +7,7 @@ const router = Router();
 router.get('/', getNews);
 router.get('/from-api', getNewsFromAPI);
 router.get('/post', protectRoute, requireAdmin, postNews);
-router.get('/:id/like', protectRoute, likeNews);
+router.get('/like/:id', protectRoute, likeNews);
 router.get('/:id', getSingleNews);
 router.get('/liked', protectRoute, getLikedNews);
 router.get('/featured', getFeaturedNews);

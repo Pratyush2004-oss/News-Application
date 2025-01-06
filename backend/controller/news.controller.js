@@ -63,7 +63,7 @@ export const getNewsFromAPI = async (req, res, next) => {
 
         }
 
-        res.status(200).json({ message: "News fetched from API" , success: true, news })
+        res.status(200).json({ message: "News fetched from API", success: true, news })
 
     } catch (error) {
         console.log("Error in getting news from API" + error.message);
@@ -118,14 +118,18 @@ export const likeNews = async (req, res, next) => {
             return res.status(404).json({ message: "News not found", success: false });
         }
 
+
         if (news.likes.includes(req.user._id)) {
-            await news.updateOne({ $pull: { likes: req.user._id } });
-            return res.status(200).json({ news, success: true });
+            news.likes.pop(req.user._id);
+            await news.save();
+            return res.status(200).json({ news, success: true, message: "News Unliked Successfully" });
+        }
+        else {
+            news.likes.push(req.user._id);
+            await news.save();
+            res.status(200).json({ news, success: true, message: "News Liked Successfully" });
         }
 
-        news.likes.push(req.user._id);
-        await news.save();
-        res.status(200).json({ news, success: true });
 
     } catch (error) {
         next(error);

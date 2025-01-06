@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { create } from 'zustand'
+import { BASE_API } from '../assets/API';
 axios.defaults.withCredentials = true
+
 
 export const useNewsStore = create((set, get) => ({
     news: [],
@@ -13,7 +15,7 @@ export const useNewsStore = create((set, get) => ({
     fetchNews: async () => {
         try {
             set({ error: null, loading: true })
-            const response = await axios.get(`/api/news`);
+            const response = await axios.get(`${BASE_API}/api/news`);
             if (response.data.success) {
                 set({ news: response.data.news, count: response.data.count })
             }
@@ -37,7 +39,7 @@ export const useNewsStore = create((set, get) => ({
     fetchSingleNews: async (id) => {
         try {
             set({ error: null, loading: true })
-            const response = await axios.get(`/api/news/${id}`);
+            const response = await axios.get(`${BASE_API}/api/news/${id}`);
             if (response.data.success) {
                 set({ currentNews: response.data.news })
             }
@@ -45,6 +47,7 @@ export const useNewsStore = create((set, get) => ({
                 set({ error: response.data.message })
             }
         } catch (error) {
+            console.log(error)
             set({ error: error.message })
         }
         finally {
@@ -55,7 +58,7 @@ export const useNewsStore = create((set, get) => ({
     fetchFeatured: async () => {
         try {
             set({ error: null, loading: true })
-            const response = await axios.get(`/api/news/featured`);
+            const response = await axios.get(`${BASE_API}/api/news/featured`);
             console.log(response.data)
             if (response.data.success) {
                 set({ featured: response.data.news })
@@ -68,5 +71,21 @@ export const useNewsStore = create((set, get) => ({
             set({ loading: false })
         }
     },
+
+    likeNews: async (id) => {
+        try {
+            set({ error: null })
+            const response = await axios.get(`${BASE_API}/api/news/like/${id}`);
+            if (response.data.success) {
+                set({ currentNews: response.data.news })
+            }
+            else {
+                console.log(response.data.message)
+                set({ error: response.data.message })
+            }
+        } catch (error) {
+            set({ error: error.message })
+        }
+    }
 
 }))
