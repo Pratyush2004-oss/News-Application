@@ -33,9 +33,12 @@ const App = () => {
   useEffect(() => {
     if (!isAuthenticated && !user) {
       check_user();
-      check_admin();
     }
-  }, [user, check_user, check_admin])
+  }, [check_user])
+
+  useEffect(() => {
+    check_admin();
+  }, [check_admin])
 
   const [loading, setLoading] = useState(false);
   const handleLogout = async () => {
@@ -45,7 +48,7 @@ const App = () => {
     } catch (error) {
 
     }
-    finally{
+    finally {
       setLoading(false);
     }
   }
@@ -66,12 +69,12 @@ const App = () => {
               <ul
                 tabIndex={0}
                 className="z-50 border-4 border-black menu menu-sm dropdown-content rounded-box w-52 bg-red-50">
-                <button className='w-full border-none btn btn-outline btn-sm' disabled={loading} onClick={handleLogout}>{ loading ? <span className='loading loading-infinity'></span> :'Logout'}</button>
+                <button className='w-full border-none btn btn-outline btn-sm' disabled={loading} onClick={handleLogout}>{loading ? <span className='loading loading-infinity'></span> : 'Logout'}</button>
               </ul>
             </div>
           ) : (
             <Link to='/login' className='btn btn-outline btn-sm'>Login</Link>
-          ) 
+          )
         }
       </nav>
       <Routes>

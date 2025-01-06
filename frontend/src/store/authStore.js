@@ -67,7 +67,7 @@ export const useAuthStore = create((set) => ({
 
     check_admin: async () => {
         try {
-            set({ error: null, isAdmin: false })
+            set({ error: null })
             const response = await axios.get(`${BASE_API}/api/users/check-admin`);
             if (response.data.success) {
                 set({ user: response.data.user, isAdmin: true });
@@ -83,7 +83,7 @@ export const useAuthStore = create((set) => ({
             set({ error: null })
             const response = await axios.get(`${BASE_API}/api/users/logout`);
             if (response.data.success) {
-                set({ user: null });
+                set({ user: null, isAdmin: false, isAuthenticated: false });
                 toast.success(response.data.message);
             }
             else {

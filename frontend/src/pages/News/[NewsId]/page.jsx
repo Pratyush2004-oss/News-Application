@@ -9,11 +9,11 @@ const NewsPage = () => {
     const { loading, fetchSingleNews, error, currentNews, likeNews } = useNewsStore();
     const { user } = useAuthStore();
     useEffect(() => {
-        if(id){
+        if (id) {
             fetchSingleNews(id);
         }
     }, [fetchSingleNews]);
-    
+
     const handleLike = async () => {
         try {
             if (user) {
@@ -38,7 +38,7 @@ const NewsPage = () => {
             <h1>{error}</h1>
         </div>
     )
-    return !loading && !error && currentNews && user && (
+    return !loading && !error && currentNews && (
         <div className='h-[80vh] p-5 overflow-auto'>
             <h1 className='font-serif text-lg font-bold md:text-2xl'>{currentNews.title}</h1>
             <p className='my-2 font-bold'>Source : <a href={currentNews.link} target='_blank' className='text-blue-500 underline'>{currentNews.source}</a></p>
@@ -48,9 +48,18 @@ const NewsPage = () => {
             </div>
             <p className='text-sm text-right'>Published At :  {currentNews.publishedAt.split('T')[0]}</p>
 
-            <div className='flex items-center my-2 '>
-                <button className='btn btn-sm' onClick={handleLike}><ThumbsUp className={`w-5 h-5 ${currentNews.likes.includes(user._id) ? 'text-blue-500 fill-blue-400' : ''}`} /><h1>{currentNews.likes.length}</h1></button>
-            </div>
+            {
+                user ? (
+                    <div className='flex items-center my-2 '>
+                        <button className='btn btn-sm' onClick={handleLike}><ThumbsUp className={`w-5 h-5 ${currentNews.likes.includes(user._id) ? 'text-blue-500 fill-blue-400' : ''}`} /><h1>{currentNews.likes.length}</h1></button>
+                    </div>
+                ) : (
+                <div className='flex items-center justify-center my-2'>
+                <h1 className='font-mono font-bold text-red-500'>Please Login to react on this news</h1>
+                </div>
+                    
+                )
+            }
         </div>
     )
 }
