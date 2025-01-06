@@ -15,8 +15,10 @@ const Login = () => {
     try {
       setLoading(true);
       const res = await login(input);
-      Navigate('/');
-      setInput({ email: '', password: '' });
+      if(res){
+        Navigate('/');
+        setInput({ email: '', password: '' });
+      }
     } catch (error) {
       console.log(error);
     }

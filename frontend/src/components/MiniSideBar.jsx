@@ -19,9 +19,6 @@ const MiniSideBar = () => {
                         <Link key={idx} to={item.link} className='btn btn-outline'><item.icon /></Link>
                     ))}
                 </div>
-                <div className='absolute bottom-10'>
-                    <Link to={'/'} className='btn btn-outline'><LogIn /></Link>
-                </div>
             </div>
             <div className="z-20 drawer-side">
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
@@ -33,8 +30,8 @@ const MiniSideBar = () => {
                             {
                                 user && (
                                     <div>
-                                        <h2 className='my-1 text-sm'>Name</h2>
-                                        <h2 className='my-1 text-sm'>Email</h2>
+                                        <h2 className='my-1 text-sm'>{user.fullName}</h2>
+                                        <h2 className='my-1 text-sm'>{user.email}</h2>
                                         <hr />
                                     </div>
                                 )
@@ -46,30 +43,6 @@ const MiniSideBar = () => {
                             ))}
                         </div>
                         <div></div>
-                        <div className='absolute bottom-0 left-0 right-0'>
-                            {
-                                user ?
-                                    <div className="dropdown dropdown-end">
-                                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                                            <div className="w-10 rounded-full">
-                                                <img
-                                                    alt="Tailwind CSS Navbar component"
-                                                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                                            </div>
-                                        </div>
-                                        <ul
-                                            tabIndex={0}
-                                            className="menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-                                            <li><a>Logout</a></li>
-                                        </ul>
-                                    </div>
-                                    :
-                                    <div>
-                                        <Link to='/login' className='w-full border-none btn btn-outline'><LogIn /> Login</Link>
-                                    </div>
-
-                            }
-                        </div>
                     </div>
                 </div>
             </div>

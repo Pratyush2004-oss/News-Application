@@ -13,7 +13,7 @@ export const useAuthStore = create((set) => ({
     register: async (input) => {
         try {
             set({ error: null })
-            const response = await axios.post('/api/auth/register', input, { headers: { 'Content-Type': 'application/json' } });
+            const response = await axios.post('/api/users/register', input, { headers: { 'Content-Type': 'application/json' } });
             console.log(response.data)
             if (response.data.success) {
                 toast.success(response.data.message);
@@ -33,15 +33,16 @@ export const useAuthStore = create((set) => ({
             if (!input.email || !input.password) {
                 toast.error('Please fill all the fields')
             }
-            const response = await axios.post('/api/auth/login', input);
-            console.log(response.data)
+            const response = await axios.post('/api/users/login', input);
             if (response.data.success) {
                 set({ user: response.data.user });
                 toast.success(response.data.message);
+                return true;
             }
             else {
                 set({ error: response.data.message });
                 toast.error(response.data.message || 'Something went wrong');
+                return false
             }
         } catch (error) {
             set({ error: error.message })
@@ -54,8 +55,7 @@ export const useAuthStore = create((set) => ({
     check_user: async () => {
         try {
             set({ error: null, isAuthenticated: false, isCheckingAuth: true })
-            const response = await axios.get('/api/auth/check-auth');
-            console.log(response)
+            const response = await axios.get('/api/users/check-auth');
             if (response.data.success) {
                 set({ user: response.data.user, isAuthenticated: true, isCheckingAuth: false });
             }
@@ -67,7 +67,7 @@ export const useAuthStore = create((set) => ({
     check_admin: async () => {
         try {
             set({ error: null, isAdmin: false })
-            const response = await axios.get('/api/auth/check-admin');
+            const response = await axios.get('/api/users/check-admin');
             if (response.data.success) {
                 set({ user: response.data.user, isAdmin: true });
             }
@@ -80,7 +80,7 @@ export const useAuthStore = create((set) => ({
     logout: async () => {
         try {
             set({ error: null })
-            const response = await axios.get('/api/auth/logout');
+            const response = await axios.get('/api/users/logout');
             if (response.data.success) {
                 set({ user: null });
                 toast.success(response.data.message);
