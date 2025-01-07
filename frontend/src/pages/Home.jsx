@@ -1,17 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Outlet } from 'react-router-dom'
 import MiniSideBar from '../components/MiniSideBar'
 import Sidebar from '../components/Sidebar'
-import NewsDialog from '../components/NewsDialog'
-import { useNewsStore } from '../store/newsStore'
-import { useAuthStore } from '../store/authStore'
 
 const Home = () => {
-  const { fetchNewsFromAPI } = useNewsStore();
-  const { isAdmin } = useAuthStore();
-  useEffect(() => {
-    fetchNewsFromAPI();
-  }, [fetchNewsFromAPI]);
+  
   return (
     <div className='flex h-[90vh] gap-4'>
       <div className='flex-col justify-between hidden w-1/6 p-4 border border-gray-500 rounded-xl lg:flex'><Sidebar /></div>

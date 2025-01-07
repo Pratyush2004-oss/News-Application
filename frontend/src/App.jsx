@@ -10,6 +10,7 @@ import Featured from './pages/Featured'
 import NewsPage from './pages/News/[NewsId]/page'
 import { useAuthStore } from './store/authStore'
 import Notification from './pages/auth/Notification'
+import { useNewsStore } from './store/newsStore'
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
@@ -29,7 +30,8 @@ const RestrictedRoute = ({ children }) => {
 
 
 const App = () => {
-  const { isAuthenticated, user, check_user, check_admin, logout } = useAuthStore();
+  const { isAuthenticated, user, check_user, check_admin, logout, isAdmin } = useAuthStore();
+  const { fetchNewsFromAPI } = useNewsStore();
   useEffect(() => {
     if (!isAuthenticated && !user) {
       check_user();
@@ -37,8 +39,16 @@ const App = () => {
   }, [check_user])
 
   useEffect(() => {
-    check_admin();
+    if (!isAdmin) {
+      check_admin();
+    }
   }, [check_admin])
+
+  useEffect(() => {
+
+    fetchNewsFromAPI();
+  }, [fetchNewsFromAPI])
+
 
   const [loading, setLoading] = useState(false);
   const handleLogout = async () => {
@@ -60,7 +70,7 @@ const App = () => {
           user ? (
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full bg-red-50">
+                <div className="w-10 rounded-full ring-primary ring-offset-base-100 ring ring-offset-2">
                   <img
                     alt="Tailwind CSS Navbar component"
                     src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />

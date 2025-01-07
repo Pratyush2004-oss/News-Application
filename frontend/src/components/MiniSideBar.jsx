@@ -1,7 +1,7 @@
 import React from 'react'
 import { Data } from "../assets/SidebarData"
 import { Link } from 'react-router-dom'
-import { LogIn, Menu } from 'lucide-react'
+import { LogIn, LogInIcon, Menu } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
 
 const MiniSideBar = () => {
@@ -19,10 +19,24 @@ const MiniSideBar = () => {
                         <Link key={idx} to={item.link} className='btn btn-outline'><item.icon /></Link>
                     ))}
                 </div>
+                <div>
+                    {
+                        user ? (
+                            <div className="avatar">
+                                <div className="w-10 rounded-full ring-primary ring-offset-base-100 ring ring-offset-2">
+                                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                </div>
+                            </div>
+                        ) : (
+                            <Link to='/login' className='btn btn-outline'><LogInIcon /></Link>
+
+                        )
+                    }
+                </div>
             </div>
             <div className="z-20 drawer-side">
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-                <div className="min-h-full p-4 menu bg-base-200 text-base-content w-80">
+                <div className="w-56 min-h-full p-4 menu bg-base-200 text-base-content">
                     {/* Sidebar content here */}
                     <div className='h-[80vh] p-3 flex flex-col justify-between relative'>
                         <div className='font-bold'>

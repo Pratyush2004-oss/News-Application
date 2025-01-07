@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { create } from 'zustand'
 import { BASE_API } from '../assets/API';
+import toast from 'react-hot-toast';
 axios.defaults.withCredentials = true
 
 
@@ -30,7 +31,11 @@ export const useNewsStore = create((set, get) => ({
     fetchNewsFromAPI: async () => {
         try {
             set({ error: null })
-            await axios.get(`/api/from-api`);
+            const response = await axios.get(`${BASE_API}/api/news/from-api`);
+            if (response.data.success) {
+            }
+            else {
+            }
         } catch (error) {
             set({ error: error.message })
         }
@@ -85,6 +90,28 @@ export const useNewsStore = create((set, get) => ({
             }
         } catch (error) {
             set({ error: error.message })
+        }
+    },
+
+    commentNews: async (id, input) => {
+        try {
+            if (!input.commentbody) {
+                return
+            }
+            set({ error: null })
+            const response = await axios.post(`${BASE_API}/api/news/comment/${id}`, input);
+            if (response.data.success) {
+                toast.success("Comment added successfully");
+                return true;
+            }
+            else {
+                console.log(response.data.message)
+                set({ error: response.data.message })
+            }
+
+        } catch (error) {
+            set({ error: error.message })
+            console.log(error)
         }
     }
 

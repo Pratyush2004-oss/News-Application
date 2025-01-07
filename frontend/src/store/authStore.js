@@ -10,6 +10,7 @@ export const useAuthStore = create((set) => ({
     isAdmin: false,
     isAuthenticated: false,
     isCheckingAuth: true,
+    isCheckingAdmin: true,
 
     register: async (input) => {
         try {
@@ -32,7 +33,7 @@ export const useAuthStore = create((set) => ({
     login: async (input) => {
         try {
             if (!input.email || !input.password) {
-                toast.error('Please fill all the fields')
+                toast.error('Please fill all the fields');
             }
             const response = await axios.post(`${BASE_API}/api/users/login`, input);
             if (response.data.success) {
@@ -50,7 +51,6 @@ export const useAuthStore = create((set) => ({
             toast.error(error.message || 'Something went wrong');
 
         }
-
     },
 
     check_user: async () => {
@@ -67,14 +67,14 @@ export const useAuthStore = create((set) => ({
 
     check_admin: async () => {
         try {
-            set({ error: null })
+            set({ error: null, isAdmin: false, isCheckingAdmin: true })
             const response = await axios.get(`${BASE_API}/api/users/check-admin`);
             if (response.data.success) {
-                set({ user: response.data.user, isAdmin: true });
+                set({ user: response.data.user, isAdmin: true, isCheckingAdmin: false });
             }
         }
         catch (error) {
-            set({ error: error.message })
+            set({ error: error.message, isCheckingAdmin: false })
         }
     },
 

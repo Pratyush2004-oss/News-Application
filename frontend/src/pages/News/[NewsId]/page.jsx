@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useNewsStore } from '../../../store/newsStore';
 import { ThumbsUp } from 'lucide-react'
 import { useAuthStore } from '../../../store/authStore';
+import CommentInput from '../../../components/CommentInput';
 
 const NewsPage = () => {
     const { id } = useParams();
@@ -50,14 +51,19 @@ const NewsPage = () => {
 
             {
                 user ? (
-                    <div className='flex items-center my-2 '>
-                        <button className='btn btn-sm' onClick={handleLike}><ThumbsUp className={`w-5 h-5 ${currentNews.likes.includes(user._id) ? 'text-blue-500 fill-blue-400' : ''}`} /><h1>{currentNews.likes.length}</h1></button>
+                    <div>
+                        <div className='flex items-center justify-between gap-5 my-2 '>
+                            <button className='btn btn-sm' onClick={handleLike}><ThumbsUp className={`w-5 h-5 ${currentNews.likes.includes(user._id) ? 'text-blue-500 fill-blue-400' : ''}`} /><h1>{currentNews.likes.length}</h1></button>
+                            <div className='flex-1'>
+                                <CommentInput id={id} />
+                            </div>
+                        </div>
+                        <button className='text-black no-underline btn btn-link'>View Comments</button>
                     </div>
                 ) : (
-                <div className='flex items-center justify-center my-2'>
-                <h1 className='font-mono font-bold text-red-500'>Please Login to react on this news</h1>
-                </div>
-                    
+                    <div className='flex items-center justify-center my-2'>
+                        <h1 className='font-mono font-bold text-red-500'>Please Login to react on this news</h1>
+                    </div>
                 )
             }
         </div>

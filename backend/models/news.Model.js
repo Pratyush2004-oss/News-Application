@@ -40,8 +40,9 @@ const newsSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "auth"
         },
-        comment: {
-            type: String
+        content: {
+            type: String,
+            required: true
         }
     }],
 }, { timestamps: true });

@@ -140,18 +140,22 @@ export const likeNews = async (req, res, next) => {
 // post comment on news
 export const postComment = async (req, res, next) => {
     try {
-        const { commentbody } = req.body;
         const newsId = req.params.id;
+        const { commentbody } = req.body;
+        if (!commentbody) {
+            return res.status(400).json({ message: "Comment body is required", success: false });
+        }
+        const commentdata = { userId: req.user._id, content: commentbody };
         const news = await newsModel.findById(newsId);
         if (!news) {
             return res.status(404).json({ message: "News not found", success: false });
         }
-        const comment = { user: req.user._id, commentbody };
-        news.comments.push(comment);
+        news.comments.push(commentdata);
         await news.save();
-        res.status(200).json({ news, success: true });
+        res.status(200).json({ news, success: true, message: "Comment added successfully" });
     } catch (error) {
-
+        console.log("Error in post comment controller : " + error.message);
+        next(error);
     }
 }
 
@@ -164,7 +168,10 @@ export const deleteComment = async (req, res, next) => {
 export const getSingleNews = async (req, res, next) => {
     try {
         const newsId = req.params.id;
-        const news = await newsModel.findById(newsId);
+        const news = await newsModel.findById(newsId).populate({
+            path: "comments",
+            populate: { path: "userId" , select: "fullName email" }
+        })
         if (!news) {
             return res.status(404).json({ message: "News not found", success: false });
         }
