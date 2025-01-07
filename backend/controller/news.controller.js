@@ -146,7 +146,10 @@ export const postComment = async (req, res, next) => {
             return res.status(400).json({ message: "Comment body is required", success: false });
         }
         const commentdata = { userId: req.user._id, content: commentbody };
-        const news = await newsModel.findById(newsId);
+        const news = await newsModel.findById(newsId).populate({
+            path: "comments",
+            populate: { path: "userId", select: "fullName email" }
+        });
         if (!news) {
             return res.status(404).json({ message: "News not found", success: false });
         }
@@ -170,7 +173,7 @@ export const getSingleNews = async (req, res, next) => {
         const newsId = req.params.id;
         const news = await newsModel.findById(newsId).populate({
             path: "comments",
-            populate: { path: "userId" , select: "fullName email" }
+            populate: { path: "userId", select: "fullName email" }
         })
         if (!news) {
             return res.status(404).json({ message: "News not found", success: false });

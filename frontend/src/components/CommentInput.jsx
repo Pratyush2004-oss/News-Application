@@ -25,7 +25,7 @@ const CommentInput = ({ id }) => {
     return (
         <div className='relative'>
             <input type="text" required placeholder="Type here" onChange={(e) => setInput({ commentbody: e.target.value })} value={input.commentbody} className="w-full input input-bordered max-sm:input-sm" />
-            <button disabled={!input.commentbody || loading} onClick={handlecomment} className='absolute top-2.5 right-2 max-sm:size-5' ><Send /></button>
+            <button disabled={!input.commentbody || loading} onClick={handlecomment} className='absolute top-2.5 right-2 ' ><Send className='max-sm:size-4' /></button>
         </div>
     )
 }

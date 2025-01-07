@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { useNewsStore } from '../../../store/newsStore';
 import { ThumbsUp } from 'lucide-react'
 import { useAuthStore } from '../../../store/authStore';
 import CommentInput from '../../../components/CommentInput';
+import CommentSection from '../../../components/CommentSection';
 
 const NewsPage = () => {
     const { id } = useParams();
     const { loading, fetchSingleNews, error, currentNews, likeNews } = useNewsStore();
     const { user } = useAuthStore();
+    const [hideComments, setHideComments] = useState(true);
     useEffect(() => {
         if (id) {
             fetchSingleNews(id);
@@ -40,7 +42,7 @@ const NewsPage = () => {
         </div>
     )
     return !loading && !error && currentNews && (
-        <div className='h-[80vh] p-5 overflow-auto'>
+        <div className='h-[80vh] p-3 sm:p-5 overflow-auto'>
             <h1 className='font-serif text-lg font-bold md:text-2xl'>{currentNews.title}</h1>
             <p className='my-2 font-bold'>Source : <a href={currentNews.link} target='_blank' className='text-blue-500 underline'>{currentNews.source}</a></p>
             <p className='my-2 font-sans text-justify'>{currentNews.description}</p>
@@ -58,7 +60,12 @@ const NewsPage = () => {
                                 <CommentInput id={id} />
                             </div>
                         </div>
-                        <button className='text-black no-underline btn btn-link'>View Comments</button>
+                        {
+                            hideComments && (
+                                <button onClick={() => setHideComments(false)} className='text-black no-underline btn btn-link'>View Comments</button>
+                            )
+                        }
+                        <CommentSection hideComments={hideComments} setHideComments={setHideComments} />
                     </div>
                 ) : (
                     <div className='flex items-center justify-center my-2'>

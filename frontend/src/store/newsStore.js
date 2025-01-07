@@ -101,11 +101,11 @@ export const useNewsStore = create((set, get) => ({
             set({ error: null })
             const response = await axios.post(`${BASE_API}/api/news/comment/${id}`, input);
             if (response.data.success) {
+                set({ currentNews: response.data.news })
                 toast.success("Comment added successfully");
                 return true;
             }
             else {
-                console.log(response.data.message)
                 set({ error: response.data.message })
             }
 
