@@ -9,7 +9,6 @@ import Signup from './pages/auth/Signup'
 import Featured from './pages/Featured'
 import NewsPage from './pages/News/[NewsId]/page'
 import { useAuthStore } from './store/authStore'
-import Notification from './pages/auth/Notification'
 import { useNewsStore } from './store/newsStore'
 
 const ProtectedRoute = ({ children }) => {
@@ -90,14 +89,9 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} >
           <Route index element={<AllNews />} />
-          <Route path='/favourite' element={
-            <ProtectedRoute>
-              <Favourites />
-            </ProtectedRoute>
-          } />
+          <Route path='/favourite' element={<Favourites />} />
           <Route path='/featured' element={<Featured />} />
           <Route path='/news/:id' element={<NewsPage />} />
-          <Route path='/notification' element={<Notification />} />
           <Route path='*' element={<Error404 />} />
         </Route>
         <Route path='/login' element={

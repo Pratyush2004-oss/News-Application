@@ -9,7 +9,7 @@ router.get('/from-api', getNewsFromAPI);
 router.get('/post', protectRoute, requireAdmin, postNews);
 router.get('/like/:id', protectRoute, likeNews);
 router.get('/:id', getSingleNews);
-router.get('/liked', protectRoute, getLikedNews);
+router.get('/liked-news', protectRoute, getLikedNews);
 router.get('/featured', getFeaturedNews);
 router.get('/delete/:id', protectRoute, requireAdmin, deleteNews);
 router.post('/comment/:id', protectRoute, postComment);

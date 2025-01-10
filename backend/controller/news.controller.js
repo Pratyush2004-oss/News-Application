@@ -187,7 +187,7 @@ export const getSingleNews = async (req, res, next) => {
 // get liked news
 export const getLikedNews = async (req, res, next) => {
     try {
-        const news = await newsModel.find({ likes: req.user._id });
+        const news = await newsModel.find({ likes: { $in: [req.user._id] } });
         if (!news) {
             return res.status(404).json({ message: "News not found", success: false });
         }

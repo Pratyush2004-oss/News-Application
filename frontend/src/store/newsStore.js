@@ -12,6 +12,7 @@ export const useNewsStore = create((set, get) => ({
     loading: false,
     count: 0,
     featured: [],
+    likedNews: [],
 
     fetchNews: async () => {
         try {
@@ -113,6 +114,24 @@ export const useNewsStore = create((set, get) => ({
             set({ error: error.message })
             console.log(error)
         }
-    }
+    },
+
+    getLikedNews: async () => {
+        try {
+            set({ error: null })
+            const response = await axios.get(`${BASE_API}/api/news/liked-news`);
+            console.log(response)
+            if (response.data.success) {
+                set({ likedNews: response.data.news })
+            }
+            else {
+                set({ error: response.data.message })
+            }
+        } catch (error) {
+            console.log(error)
+            set({ error: error.message })
+        }
+    },
+
 
 }))
