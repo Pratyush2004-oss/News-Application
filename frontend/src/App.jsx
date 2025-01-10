@@ -38,7 +38,7 @@ const App = () => {
   }, [check_user])
 
   useEffect(() => {
-    if (!isAdmin) {
+    if (!isAdmin && user) {
       check_admin();
     }
   }, [check_admin])

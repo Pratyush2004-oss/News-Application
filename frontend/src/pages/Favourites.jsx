@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNewsStore } from '../store/newsStore'
 import { useAuthStore } from '../store/authStore';
 import Notification from '../components/Notification';
+import NewsCard from '../components/NewsCard';
 
 const Favourites = () => {
   const { user } = useAuthStore();
@@ -16,7 +17,15 @@ const Favourites = () => {
     return <Notification />
   }
   return likedNews && (
-    <div>
+    <div className='h-[80vh] overflow-auto'>
+      <h1 className='text-2xl font-bold'>Favourites ({likedNews.length})</h1>
+      <div className=''>
+        {
+          likedNews.map((item) => (
+            <NewsCard item={item} key={item._id} />
+          ))
+        }
+      </div>
     </div>
   )
 }

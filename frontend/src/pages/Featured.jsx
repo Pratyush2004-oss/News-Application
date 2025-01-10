@@ -3,7 +3,10 @@ import { useNewsStore } from '../store/newsStore'
 import NewsCard from '../components/NewsCard';
 
 const Featured = () => {
-  const { featured, loading, fetchFeatured, error } = useNewsStore();
+  const { featured, loading, fetchFeatured } = useNewsStore();
+  useEffect(() => {
+    fetchFeatured();
+  }, [fetchFeatured])
   return (
     <div>
       <div className='h-[80vh] p-5 overflow-auto'>
@@ -15,7 +18,6 @@ const Featured = () => {
             </div>
           ))
         }
-
       </div>
     </div>
   )
