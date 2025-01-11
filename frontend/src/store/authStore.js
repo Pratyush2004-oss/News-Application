@@ -34,6 +34,7 @@ export const useAuthStore = create((set) => ({
         try {
             if (!input.email || !input.password) {
                 toast.error('Please fill all the fields');
+                return;
             }
             const response = await axios.post(`${BASE_API}/api/users/login`, input);
             if (response.data.success) {
