@@ -39,7 +39,7 @@ export const useAuthStore = create((set) => ({
             const response = await axios.post(`${BASE_API}/api/users/login`, input);
             if (response.data.success) {
                 set({ user: response.data.user });
-                toast.success(response.data.message);
+                toast.success(error.response.data.message);
                 return true;
             }
             else {
