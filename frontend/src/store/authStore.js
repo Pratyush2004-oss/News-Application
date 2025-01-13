@@ -39,12 +39,12 @@ export const useAuthStore = create((set) => ({
             const response = await axios.post(`${BASE_API}/api/users/login`, input);
             if (response.data.success) {
                 set({ user: response.data.user });
-                toast.success(error.response.data.message);
+                toast.success(response.data.message);
                 return true;
             }
             else {
                 set({ error: response.data.message });
-                toast.error(response.data.message || 'Something went wrong');
+                toast.error(zresponse.data.message || 'Something went wrong');
                 return false
             }
         } catch (error) {
@@ -93,5 +93,5 @@ export const useAuthStore = create((set) => ({
         } catch (error) {
             set({ error: error.message })
         }
-    }
+    },
 }))
