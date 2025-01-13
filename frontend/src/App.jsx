@@ -38,13 +38,10 @@ const App = () => {
   }, [check_user])
 
   useEffect(() => {
-    if (!isAdmin && user) {
-      check_admin();
-    }
+    check_admin();
   }, [check_admin])
 
   useEffect(() => {
-
     fetchNewsFromAPI();
   }, [fetchNewsFromAPI])
 

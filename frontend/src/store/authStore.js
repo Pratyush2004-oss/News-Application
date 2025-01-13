@@ -94,4 +94,5 @@ export const useAuthStore = create((set) => ({
             set({ error: error.message })
         }
     },
+
 }))
