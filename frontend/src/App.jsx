@@ -10,6 +10,7 @@ import Featured from './pages/Featured'
 import NewsPage from './pages/News/[NewsId]/page'
 import { useAuthStore } from './store/authStore'
 import { useNewsStore } from './store/newsStore'
+import AdminPage from './pages/admin/adminPage'
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
@@ -34,12 +35,9 @@ const App = () => {
   useEffect(() => {
     if (!isAuthenticated && !user) {
       check_user();
+      check_admin();
     }
-  }, [check_user])
-
-  useEffect(() => {
-    check_admin();
-  }, [check_admin])
+  }, [check_user, check_admin])
 
   useEffect(() => {
     fetchNewsFromAPI();
@@ -62,26 +60,34 @@ const App = () => {
     <div className='h-screen p-4'>
       <nav className='flex items-center justify-between p-2'>
         <Link to='/' className='text-3xl font-bold'>News <span className='text-red-500'>App</span> </Link>
-        {
-          user ? (
-            <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full ring-primary ring-offset-base-100 ring ring-offset-2">
-                  <img
-                    alt="Tailwind CSS Navbar component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        <div className='flex items-center gap-3'>
+          <div className='flex items-center gap-4'>{
+            isAdmin && (
+              <Link to={'/admin'} className='btn btn-outline btn-sm'>Admin Dashboard</Link>
+            )
+          }
+          </div>
+          {
+            user ? (
+              <div className="dropdown dropdown-end">
+                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                  <div className="w-10 rounded-full ring-primary ring-offset-base-100 ring ring-offset-2">
+                    <img
+                      alt="Tailwind CSS Navbar component"
+                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                  </div>
                 </div>
+                <ul
+                  tabIndex={0}
+                  className="z-50 border-4 border-black menu menu-sm dropdown-content rounded-box w-52 bg-red-50">
+                  <button className='w-full border-none btn btn-outline btn-sm' disabled={loading} onClick={handleLogout}>{loading ? <span className='loading loading-infinity'></span> : 'Logout'}</button>
+                </ul>
               </div>
-              <ul
-                tabIndex={0}
-                className="z-50 border-4 border-black menu menu-sm dropdown-content rounded-box w-52 bg-red-50">
-                <button className='w-full border-none btn btn-outline btn-sm' disabled={loading} onClick={handleLogout}>{loading ? <span className='loading loading-infinity'></span> : 'Logout'}</button>
-              </ul>
-            </div>
-          ) : (
-            <Link to='/login' className='btn btn-outline btn-sm'>Login</Link>
-          )
-        }
+            ) : (
+              <Link to='/login' className='btn btn-outline btn-sm'>Login</Link>
+            )
+          }
+        </div>
       </nav>
       <Routes>
         <Route path='/' element={<Home />} >
@@ -89,6 +95,7 @@ const App = () => {
           <Route path='/favourite' element={<Favourites />} />
           <Route path='/featured' element={<Featured />} />
           <Route path='/news/:id' element={<NewsPage />} />
+          <Route path='/admin' element={<AdminPage />} />
           <Route path='*' element={<Error404 />} />
         </Route>
         <Route path='/login' element={
